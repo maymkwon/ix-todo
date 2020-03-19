@@ -16,9 +16,15 @@ import {
   IconButton,
   Paper,
   Chip,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+
+const options = ['Edit', 'Delete'];
+
+const ITEM_HEIGHT = 48;
 
 // import CommentIcon from '@material-ui/icons/Comment';
 const CustomChip = withStyles(theme => ({
@@ -65,17 +71,27 @@ export default function TodoList() {
     setChecked(newChecked);
   };
 
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <div
       style={{
         display: 'flex',
         justifyContent: 'center',
-        height: 'calc(100% - 140px)',
         overflow: 'auto',
       }}>
-      <Paper elevation={3}>
-        <List className={classes.root} style={{ marginBottom: 30 }}>
-          {[0, 1, 2, 3].map(value => {
+      <div>
+        <List className={classes.root} style={{ margin: '30px 0' }}>
+          {[0, 1, 2, 3, 4, 5].map(value => {
             const labelId = `checkbox-list-label-${value}`;
 
             return (
@@ -84,6 +100,7 @@ export default function TodoList() {
                 role={undefined}
                 dense
                 button
+                divider
                 onClick={handleToggle(value)}>
                 <ListItemIcon>
                   <Checkbox
@@ -171,15 +188,33 @@ export default function TodoList() {
                   }
                 />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="comments">
-                    <DeleteIcon />
+                  <IconButton
+                    aria-label="more"
+                    aria-controls="todo-setting"
+                    aria-haspopup="true"
+                    onClick={handleClick}>
+                    <MoreVertIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
             );
           })}
         </List>
-      </Paper>
+        <Menu
+          id="todo-setting"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            style: {
+              maxHeight: ITEM_HEIGHT * 4.5,
+              width: '20ch',
+            },
+          }}>
+          <MenuItem onClick={handleClose}>Edit</MenuItem>
+          <MenuItem onClick={handleClose}>Delete</MenuItem>
+        </Menu>
+      </div>
     </div>
   );
 }
