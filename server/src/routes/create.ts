@@ -1,6 +1,7 @@
 import models from '../../models';
 import Router from 'koa-router';
 import { throwError, throwIf, sendSuccess, sendError } from '../helper/error';
+import { isEmpty } from '../helper/utils';
 
 const router = new Router();
 const todoModel = models.Todos;
@@ -15,7 +16,7 @@ router.post('/', async (ctx, next) => {
         where: { title: data.title },
         defaults: {
           title: data.title,
-          done: data.done,
+          done: false,
           strtDt: data.strtDt,
           endDt: data.endDt,
         },

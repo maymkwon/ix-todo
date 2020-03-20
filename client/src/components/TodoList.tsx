@@ -21,17 +21,15 @@ import {
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-
-const options = ['Edit', 'Delete'];
-
-const ITEM_HEIGHT = 48;
-
-// import CommentIcon from '@material-ui/icons/Comment';
-const CustomChip = withStyles(theme => ({
-  root: {
-    margin: theme.spacing(0.5),
-  },
-}))(Chip);
+import EditIcon from '@material-ui/icons/Edit';
+import RelationList from './RelationList';
+import { SETTING_ITEM_HEIGHT } from '../common/Const';
+// var groupBy = function(xs, key) {
+//   return xs.reduce(function(rv, x) {
+//     (rv[x[key]] = rv[x[key]] || []).push(x);
+//     return rv;
+//   }, {});
+// };
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,19 +38,8 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 500,
       backgroundColor: theme.palette.background.paper,
     },
-    chip: {
-      margin: theme.spacing(0.5),
-    },
   })
 );
-
-// display: flex;
-//     justify-content: center;
-//     margin-bottom: 30px;
-//     /* position: absolute; */
-//     overflow: auto;
-//     /* bottom: 0; */
-//     height: calc(100% - 140px);
 
 export default function TodoList() {
   const classes = useStyles();
@@ -74,11 +61,11 @@ export default function TodoList() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClickSetting = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleCloseSetting = () => {
     setAnchorEl(null);
   };
 
@@ -138,51 +125,7 @@ export default function TodoList() {
                         </Typography>
                       </Typography>
                       <span>
-                        <Chip
-                          className={classes.chip}
-                          label="Basic"
-                          component="span"
-                        />
-                        <Chip
-                          className={classes.chip}
-                          label="Basic"
-                          component="span"
-                        />
-                        <Chip
-                          className={classes.chip}
-                          label="Basic"
-                          component="span"
-                        />
-                        <Chip
-                          className={classes.chip}
-                          label="Basic"
-                          component="span"
-                        />
-                        <Chip
-                          className={classes.chip}
-                          label="Basic"
-                          component="span"
-                        />
-                        <Chip
-                          className={classes.chip}
-                          label="Basic"
-                          component="span"
-                        />
-                        <Chip
-                          className={classes.chip}
-                          label="Basic"
-                          component="span"
-                        />
-                        <Chip
-                          className={classes.chip}
-                          label="Basic"
-                          component="span"
-                        />
-                        <Chip
-                          className={classes.chip}
-                          label="Basic"
-                          component="span"
-                        />
+                        <RelationList />
                       </span>
                     </React.Fragment>
                   }
@@ -192,7 +135,7 @@ export default function TodoList() {
                     aria-label="more"
                     aria-controls="todo-setting"
                     aria-haspopup="true"
-                    onClick={handleClick}>
+                    onClick={handleClickSetting}>
                     <MoreVertIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -204,15 +147,25 @@ export default function TodoList() {
           id="todo-setting"
           anchorEl={anchorEl}
           open={open}
-          onClose={handleClose}
+          onClose={handleCloseSetting}
           PaperProps={{
             style: {
-              maxHeight: ITEM_HEIGHT * 4.5,
+              maxHeight: SETTING_ITEM_HEIGHT * 4.5,
               width: '20ch',
             },
           }}>
-          <MenuItem onClick={handleClose}>Edit</MenuItem>
-          <MenuItem onClick={handleClose}>Delete</MenuItem>
+          <MenuItem onClick={handleCloseSetting}>
+            <ListItemIcon>
+              <EditIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="inherit">Edit</Typography>
+          </MenuItem>
+          <MenuItem onClick={handleCloseSetting}>
+            <ListItemIcon>
+              <DeleteIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="inherit">Delete</Typography>
+          </MenuItem>
         </Menu>
       </div>
     </div>

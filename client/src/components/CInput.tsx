@@ -46,7 +46,6 @@ export default function CInput(props: Props) {
 
   return (
     <FormControl disabled={false} error={false}>
-      {/* <InputLabel htmlFor={props.id}>{props.label}</InputLabel> */}
       <CustomInput
         id={props.id}
         value={name}
