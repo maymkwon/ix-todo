@@ -13,6 +13,10 @@ export interface ISearchParams {
 export type TodoItem = {
   id: number;
   title: string;
+  done: boolean;
+  relId: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export interface ITodoData {

@@ -1,6 +1,6 @@
 import { createReducer } from 'typesafe-actions';
 import { TodoState, TodoAction, TodoItem } from './types';
-import { getTodoList } from './actions';
+import { fetchTodosAsync } from './actions';
 
 type State = {
   count: TodoItem[];
@@ -15,9 +15,9 @@ const initialState: TodoState = {
 
 const todoReducer = createReducer<TodoState, TodoAction>(
   initialState
-).handleAction(getTodoList, (state, action) => ({
+).handleAction(fetchTodosAsync.success, (state, action) => ({
   ...state,
-  list: action.payload,
+  data: action.payload,
 }));
 
 export default todoReducer;

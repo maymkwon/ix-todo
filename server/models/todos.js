@@ -3,9 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const Todos = sequelize.define('Todos', {
     title: DataTypes.STRING,
     done: DataTypes.BOOLEAN,
-    relId: DataTypes.INTEGER,
-    endDt: DataTypes.DATE,
-    strtDt: DataTypes.DATE
+    relId: DataTypes.BIGINT
   }, {});
   Todos.associate = function(models) {
     // associations can be defined here

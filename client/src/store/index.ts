@@ -12,5 +12,5 @@ const middleware = [logger, saga];
 const enhancer = compose(applyMiddleware(...middleware));
 const initalState = {};
 const store = createStore(rootReducer, initalState, enhancer);
-
+saga.run(rootSaga);
 export default store;

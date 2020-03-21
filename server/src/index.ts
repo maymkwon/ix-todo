@@ -7,6 +7,7 @@ import cors from '@koa/cors';
 import todoRouter from './routes/todos';
 import createRouter from './routes/create';
 import updateRouter from './routes/update';
+import deleteRouter from './routes/delete';
 const app = new Koa();
 const router = new Router();
 
@@ -79,10 +80,12 @@ app.use(ctx => {
               <p>Todolist - Root page</p>`;
 });
 
+// 하나의 라우터에서 처리할수 있음
+// 기능별로 나누어 보았습니다.
 router.use('/todos', todoRouter.routes());
 router.use('/create', createRouter.routes());
 router.use('/update', updateRouter.routes());
-// router.use('/delete', todoRouter.routes());
+router.use('/delete', deleteRouter.routes());
 
 app.use(async (ctx, next) => {
   try {

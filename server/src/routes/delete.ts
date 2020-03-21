@@ -1,29 +1,20 @@
 import models from '../../models';
 import Router from 'koa-router';
+import { throwError, throwIf, sendSuccess, sendError } from '../helper/error';
 
 const router = new Router();
 const todoModel = models.Todos;
 
-router.post('/create', async (ctx, next) => {
+router.post('/', async (ctx, next) => {
   const data = ctx.request.body;
   try {
     await todoModel
-      .findOrCreate({
-        where: { id: data.title },
-        defaults: {
-          ...data,
-        },
+      .destroy({
+        where: { id: data.id },
       })
-      .spread((memo, created) => {
-        if (created) {
-          console.log('New Memo: ', memo.dataValues);
-        } else {
-          console.log('Old Memo: ', memo.dataValues);
-        }
+      .catch(error => {
+        console.log('sequelize update error', error);
       });
-    // if (updateTodos) {
-    //   ctx.body = updateTodos;
-    // }
   } catch (error) {
     ctx.response.status = 404;
     ctx.body = '존재하지 않습니다.';
