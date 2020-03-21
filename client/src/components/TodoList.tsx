@@ -91,6 +91,7 @@ export default function TodoList() {
             <TodoListItem
               key={todo.id}
               data={todo}
+              relTodos={todoData.relTodos[todo.id]}
               onClickEditOpenPopup={handleOpenEditPopup}
             />
           );

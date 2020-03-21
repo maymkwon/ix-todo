@@ -1,5 +1,11 @@
 import { createAction, createAsyncAction } from 'typesafe-actions';
-import { ISearchParams, ITodoData, TodoItem } from './types';
+import {
+  ISearchParams,
+  ITodoData,
+  TodoItem,
+  TypeTodoCreate,
+  TypeDeleteParams,
+} from './types';
 
 export const GET_TODO_LIST = 'todos/GET_TODO_LIST';
 export const SUCCESS_TODO_LIST = 'todos/SUCCESS_TODO_LIST';
@@ -10,12 +16,17 @@ export const SUCCESS_EDIT_TODO = 'todos/SUCCESS_EDIT_TODO';
 export const FAIL_EDIT_TODO = 'todos/FAIL_EDIT_TODO';
 
 export const CREATE_TODO = 'todos/CREATE_TODO';
-export const REMOVE_TODO = 'todos/REMOVE_TODO';
+export const SUCCESS_CREATE_TODO = 'todos/SUCCESS_CREATE_TODO';
+export const FAIL_CREATE_TODO = 'todos/FAIL_CREATE_TODO';
+
+export const DELETE_TODO = 'todos/DELETE_TODO';
+export const SUCCESS_DELETE_TODO = 'todos/SUCCESS_DELETE_TODO';
+export const FAIL_DELETE_TODO = 'todos/FAIL_DELETE_TODO';
 
 // export const getTodoList = createAction(GET_TODO_LIST)<ISearchParams>();
 // export const requestEditTodo = createAction(EDIT_TODO)<number>();
-export const requestCreateTodo = createAction(CREATE_TODO)<string>();
-export const requestRemoveTodo = createAction(REMOVE_TODO)<number>();
+// export const requestCreateTodo = createAction(CREATE_TODO)<string>();
+// export const requestRemoveTodo = createAction(REMOVE_TODO)<number>();
 
 export const fetchTodosAsync = createAsyncAction(
   GET_TODO_LIST,
@@ -28,3 +39,15 @@ export const requestEditTodoAsync = createAsyncAction(
   SUCCESS_EDIT_TODO,
   FAIL_EDIT_TODO
 )<TodoItem, ITodoData, Error>();
+
+export const requestDeleteTodoAsync = createAsyncAction(
+  DELETE_TODO,
+  SUCCESS_DELETE_TODO,
+  FAIL_DELETE_TODO
+)<TypeDeleteParams, ITodoData, Error>();
+
+export const requestCreateTodoAsync = createAsyncAction(
+  CREATE_TODO,
+  SUCCESS_CREATE_TODO,
+  FAIL_CREATE_TODO
+)<TypeTodoCreate, ITodoData, Error>();

@@ -27,17 +27,6 @@ import {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    wrap: {
-      position: 'relative',
-      display: 'flex',
-      justifyContent: 'center',
-      overflow: 'auto',
-    },
-    root: {
-      width: '100%',
-      maxWidth: 500,
-      backgroundColor: theme.palette.background.paper,
-    },
     done: {
       textDecoration: 'line-through',
       opacity: '0.4',
@@ -47,13 +36,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface ITodoListItem {
   data: TodoItem;
+  relTodos: TodoItem[];
   onClickEditOpenPopup: (data: TodoItem) => void;
 }
 
 export default function TodoListItem(props: ITodoListItem) {
-  // const classes = useStyles();
-  const { getList, requestEditTodo } = useTodoActions();
-  const [editOpen, setEditOpen] = useState<null | TodoItem>(null);
+  const classes = useStyles();
+  const { getList, requestEditTodo, requestDeleteTodo } = useTodoActions();
+  // const [editOpen, setEditOpen] = useState<null | TodoItem>(null);
   // const [checked, setChecked] = useState([0]);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -67,14 +57,23 @@ export default function TodoListItem(props: ITodoListItem) {
   };
 
   const handleEditState = (todoInfo: TodoItem) => () => {
-    const newTodoInfo = { ...todoInfo };
-    newTodoInfo.done = !newTodoInfo.done;
-    requestEditTodo(newTodoInfo);
+    // props.relTodos;
+    let allDone = true;
+    if (props.relTodos && props.relTodos.length !== 0) {
+      allDone = props.relTodos.every(o => o.done);
+    }
+
+    const parentTodos = [];
+    if (allDone) {
+      const newTodoInfo = { ...todoInfo };
+      newTodoInfo.done = !newTodoInfo.done;
+      requestEditTodo(newTodoInfo);
+    }
   };
-  const handleDeleteTodo = (todoId: number) => () => {
+  const handleDeleteTodo = (id: number) => {
     // const newTodoInfo = { ...todoInfo };
     // newTodoInfo.done = !newTodoInfo.done;
-    // requestEditTodo(newTodoInfo);
+    requestDeleteTodo({ id });
   };
 
   const handleOpenEdit = (todoInfo: TodoItem) => {
@@ -100,7 +99,7 @@ export default function TodoListItem(props: ITodoListItem) {
 
   const { id, title, done, createdAt, updatedAt } = props.data;
   const labelId = `todoCheck-list-label-${id}`;
-
+  //  const allDone = props.relTodos.every(o => o.done);
   return (
     <React.Fragment>
       <ListItem
@@ -123,7 +122,7 @@ export default function TodoListItem(props: ITodoListItem) {
           primary={
             <Typography
               display="block"
-              // className={cn({ [classes.done]: done })}
+              className={cn({ [classes.done]: done })}
               component="span"
               variant="h4">
               {renderText(title)}
@@ -140,7 +139,7 @@ export default function TodoListItem(props: ITodoListItem) {
                 </Typography>
               </Typography>
               <span>
-                <RelationList />
+                <RelationList relTodos={props.relTodos} />
               </span>
             </React.Fragment>
           }
@@ -173,7 +172,7 @@ export default function TodoListItem(props: ITodoListItem) {
           </ListItemIcon>
           <Typography variant="inherit">Edit</Typography>
         </MenuItem>
-        <MenuItem onClick={handleCloseSetting}>
+        <MenuItem onClick={() => handleDeleteTodo(id)}>
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>

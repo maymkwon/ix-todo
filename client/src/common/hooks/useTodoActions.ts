@@ -3,8 +3,15 @@ import { useCallback } from 'react';
 import {
   fetchTodosAsync,
   requestEditTodoAsync,
+  requestDeleteTodoAsync,
+  requestCreateTodoAsync,
 } from '../../store/todo/actions';
-import { ISearchParams, TodoItem } from '../../store/todo/types';
+import {
+  ISearchParams,
+  TodoItem,
+  TypeDeleteParams,
+  TypeTodoCreate,
+} from '../../store/todo/types';
 
 export default function useTodo(id?: number) {
   const dispatch = useDispatch();
@@ -16,8 +23,14 @@ export default function useTodo(id?: number) {
     (data: TodoItem) => dispatch(requestEditTodoAsync.request(data)),
     [dispatch]
   );
-  // const onToggle = useCallback(() => dispatch(toggleTodo(id)), [dispatch, id]);
-  // const onRemove = useCallback(() => dispatch(removeTodo(id)), [dispatch, id]);
+  const requestDeleteTodo = useCallback(
+    (data: TypeDeleteParams) => dispatch(requestDeleteTodoAsync.request(data)),
+    [dispatch]
+  );
+  const requestCreateTodo = useCallback(
+    (data: TypeTodoCreate) => dispatch(requestCreateTodoAsync.request(data)),
+    [dispatch]
+  );
 
-  return { getList, requestEditTodo };
+  return { getList, requestEditTodo, requestDeleteTodo, requestCreateTodo };
 }

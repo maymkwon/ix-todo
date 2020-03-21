@@ -10,14 +10,33 @@ export interface ISearchParams {
   pageSize: number;
 }
 
-export type TodoItem = {
+export type TypeDeleteParams = {
   id: number;
+};
+
+// export type TodoItem = {
+//   id: number;
+//   title: string;
+//   done: boolean;
+//   relId: number;
+//   createdAt: string;
+//   updatedAt: string;
+// };
+
+export type TypeTodoCreate = {
+  title: string;
+};
+export type TypeTodoItem = {
   title: string;
   done: boolean;
   relId: number;
   createdAt: string;
   updatedAt: string;
 };
+
+export interface TodoItem extends TypeTodoItem {
+  id: number;
+}
 
 export interface ITodoData {
   contents: TodoItem[];

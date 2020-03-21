@@ -28,16 +28,50 @@ function* editTodo(
   }
 }
 
+function* createTodo(
+  action: ReturnType<typeof actions.requestCreateTodoAsync.request>
+): Generator {
+  try {
+    const data = action.payload;
+    const response: any = yield call(TodoServices.requestCreateTodo, data);
+    yield put(actions.requestCreateTodoAsync.success(response.data));
+    yield put(actions.fetchTodosAsync.request({ pageNo: 1, pageSize: 5 }));
+  } catch (e) {
+    yield put(actions.requestCreateTodoAsync.failure(e));
+  }
+}
+
+function* deleteTodo(
+  action: ReturnType<typeof actions.requestDeleteTodoAsync.request>
+): Generator {
+  try {
+    const data = action.payload;
+    const response: any = yield call(TodoServices.requestDeleteTodo, data);
+    yield put(actions.requestDeleteTodoAsync.success(response.data));
+    yield put(actions.fetchTodosAsync.request({ pageNo: 1, pageSize: 5 }));
+  } catch (e) {
+    yield put(actions.requestDeleteTodoAsync.failure(e));
+  }
+}
+
 function* watchTodoList() {
   yield takeEvery(actions.fetchTodosAsync.request, getTodoList);
 }
 function* watchEdit() {
   yield takeEvery(actions.requestEditTodoAsync.request, editTodo);
 }
+function* watchCreate() {
+  yield takeEvery(actions.requestCreateTodoAsync.request, createTodo);
+}
+function* watchDelete() {
+  yield takeEvery(actions.requestDeleteTodoAsync.request, deleteTodo);
+}
 
 function* todoSaga() {
   yield fork(watchTodoList);
   yield fork(watchEdit);
+  yield fork(watchCreate);
+  yield fork(watchDelete);
 }
 
 export default todoSaga;

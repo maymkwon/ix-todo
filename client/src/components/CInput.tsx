@@ -29,29 +29,39 @@ const CustomInput = withStyles({
   },
 })(Input);
 
-interface Props {
+interface ICInput {
   id: string;
   placeHolder: string;
   disabled?: boolean;
   error?: boolean;
   helpText?: string;
+  onSubmit: (title: string) => void;
 }
 
-export default function CInput(props: Props) {
-  const [name, setName] = React.useState('');
+export default function CInput(props: ICInput) {
+  const [title, setTitle] = React.useState('');
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      // Do code here
+      e.preventDefault();
+      props.onSubmit(title);
+    }
   };
 
   return (
     <FormControl disabled={false} error={false}>
       <CustomInput
         id={props.id}
-        value={name}
+        value={title}
         placeholder={props.placeHolder}
         onChange={handleChange}
         aria-describedby={`${props.id}-helper-text`}
+        onKeyPress={handleKeyPress}
       />
       <FormHelperText id={`${props.id}-helper-text`}>
         {props.helpText}
