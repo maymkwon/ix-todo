@@ -3,7 +3,6 @@ import { Chip } from '@material-ui/core';
 import { Theme, makeStyles, createStyles } from '@material-ui/core/styles';
 import { TodoItem } from '../store/todo/types';
 import cn from 'classnames';
-// relTodos;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,7 +21,6 @@ interface IRelationList {
 }
 export default function RelationList(props: IRelationList) {
   const classes = useStyles();
-  // if (props.relTodos) return null;
   return (
     <React.Fragment>
       {props.relTodos &&
@@ -31,7 +29,7 @@ export default function RelationList(props: IRelationList) {
             <Chip
               key={relTodo.id}
               className={cn(classes.chip, { [classes.done]: relTodo.done })}
-              label="Basic"
+              label={relTodo.title}
               component="span"
             />
           );

@@ -11,10 +11,11 @@ router.get('/', async (ctx, next) => {
   const { pageNo, pageSize, keyword = '', done } = ctx.request.query;
   let offset = 0;
   const page = toNum(pageNo);
+  const size = toNum(pageSize);
   if (page > 1) {
-    offset = toNum(pageNo) * (toNum(pageSize) - 1);
+    offset = size * (page - 1);
   }
-  const limit = toNum(pageSize);
+  const limit = size;
 
   const searchParams = {
     [Op.and]: {
@@ -26,11 +27,25 @@ router.get('/', async (ctx, next) => {
   const { count: totalCount, rows: contents } = await todoModel.findAndCountAll(
     {
       where: {
-        ...searchParams,
+        // ...searchParams,
       },
       order: [['createdAt', 'DESC']],
       offset,
       limit,
+    }
+  );
+  console.log('rowsrows', offset, limit);
+  const data = { totalCount, contents };
+  ctx.body = data;
+});
+
+router.get('/all', async (ctx, next) => {
+  const { count: totalCount, rows: contents } = await todoModel.findAndCountAll(
+    {
+      where: {
+        // relId: null,
+      },
+      order: [['createdAt', 'DESC']],
     }
   );
   const data = { totalCount, contents };

@@ -14,18 +14,15 @@ export type TypeDeleteParams = {
   id: number;
 };
 
-// export type TodoItem = {
-//   id: number;
-//   title: string;
-//   done: boolean;
-//   relId: number;
-//   createdAt: string;
-//   updatedAt: string;
-// };
-
 export type TypeTodoCreate = {
   title: string;
+  callback?: () => void;
 };
+export interface TypeTodoEdit extends TypeTodoCreate {
+  id: number;
+  done: boolean;
+  relId?: number;
+}
 export type TypeTodoItem = {
   title: string;
   done: boolean;
@@ -36,13 +33,13 @@ export type TypeTodoItem = {
 
 export interface TodoItem extends TypeTodoItem {
   id: number;
+  callback?: () => void;
 }
 
 export interface ITodoData {
   contents: TodoItem[];
-  totalCount: number;
+  pageNo?: number;
+  totalCount?: number;
 }
 
-export type TodoState = { data: ITodoData };
-
-// text, 완료 여부, 날짜
+export type TodoState = { data: ITodoData; allData: ITodoData };

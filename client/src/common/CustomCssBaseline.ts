@@ -5,11 +5,8 @@ const styles = (theme: Theme) => ({
   '@global': {
     'html,body': {
       minHeight: '100%',
-      // overflow: 'hidden',
     },
-    body: {
-      // minWidth: 1280,
-    },
+    body: {},
   },
 });
 

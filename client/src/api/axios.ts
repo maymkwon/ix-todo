@@ -1,9 +1,4 @@
-import axios, {
-  AxiosResponse,
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosInstance,
-} from 'axios';
+import axios, { AxiosRequestConfig, AxiosInstance } from 'axios';
 
 const config: AxiosRequestConfig = {
   headers: {

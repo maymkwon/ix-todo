@@ -22,8 +22,8 @@ router.post('/', async (ctx, next) => {
         },
       })
       .spread((a, b) => {
-        console.log(a);
-        console.log(b);
+        // console.log(a);
+        // console.log(b);
         sendSuccess(ctx, 'SUCESS');
       })
       .catch(error => {

@@ -1,30 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import DeleteIcon from '@material-ui/icons/Delete';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import EditIcon from '@material-ui/icons/Edit';
-import RelationList from './RelationList';
-import { SETTING_ITEM_HEIGHT } from '../common/Const';
+import { PAGE_SIZE } from '../common/Const';
 import useTodoActions from '../common/hooks/useTodoActions';
-import useTodoData from '../common/hooks/useTodoData';
-import { renderText, renderDate } from '../common/utils';
-import cn from 'classnames';
+import useAllTodoData from '../common/hooks/useAllTodoData';
 import Empty from './EmptyList';
 import EditTodoPopup from './EditTodoPopup';
-import { TodoItem } from '../store/todo/types';
+import { TodoItem, TypeTodoItem } from '../store/todo/types';
 import TodoListItem from './TodoListItem';
-import {
-  List,
-  Typography,
-  ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-  Checkbox,
-  IconButton,
-  Menu,
-  MenuItem,
-} from '@material-ui/core';
+import { List } from '@material-ui/core';
+import Pagination from './Pagination';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,9 +18,10 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       overflow: 'auto',
     },
-    root: {
+    list: {
       width: '100%',
       maxWidth: 500,
+      margin: '30px 0px 40px',
       backgroundColor: theme.palette.background.paper,
     },
     done: {
@@ -53,45 +38,39 @@ type AnchorEl = {
 
 export default function TodoList() {
   const classes = useStyles();
-  const { getList } = useTodoActions();
-  const todoData = useTodoData();
+  const { getAllList } = useTodoActions();
+  const todoAllData = useAllTodoData();
+  const [listData, setListdata] = useState<TodoItem[]>([]);
   const [editInfo, setEditOpen] = useState<null | TodoItem>(null);
-  // const [checked, setChecked] = useState([0]);
-
-  // const [anchorEl, setAnchorEl] = useState<null | AnchorEl>(null);
-
-  // const handleCloseSetting = () => {
-  //   setAnchorEl(null);
-  // };
-
-  // const handleClosePopup = () => {
-  //   setEditOpen(null);
-  // };
 
   const handleOpenEditPopup = (todoInfo: TodoItem) => {
     setEditOpen(todoInfo);
   };
+
   const handleCloseEditPopup = () => {
     setEditOpen(null);
   };
 
+  const handlePageChange = (listData: TodoItem[]) => {
+    setListdata(listData);
+  };
+
   useEffect(() => {
-    getList({ pageNo: 1, pageSize: 5 });
-    return () => {};
+    getAllList();
   }, []);
 
-  if (todoData.contents.length === 0) {
+  if (todoAllData.contents.length === 0) {
     return <Empty />;
   }
   return (
     <div className={classes.wrap}>
-      <List className={classes.root} style={{ margin: '30px 0' }}>
-        {todoData.contents.map(todo => {
+      <List className={classes.list}>
+        {listData.map(todo => {
           return (
             <TodoListItem
               key={todo.id}
               data={todo}
-              relTodos={todoData.relTodos[todo.id]}
+              relTodos={todoAllData.relTodos[todo.id]}
               onClickEditOpenPopup={handleOpenEditPopup}
             />
           );
@@ -102,7 +81,12 @@ export default function TodoList() {
         handleClose={handleCloseEditPopup}
         data={editInfo}
       />
-      <div style={{ position: 'absolute', bottom: 0 }}>aaa</div>
+      <div style={{ position: 'absolute', bottom: 0 }}>
+        <Pagination
+          items={todoAllData.contents}
+          onChangePage={handlePageChange}
+        />
+      </div>
     </div>
   );
 }

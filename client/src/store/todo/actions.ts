@@ -1,11 +1,15 @@
-import { createAction, createAsyncAction } from 'typesafe-actions';
+import { createAsyncAction } from 'typesafe-actions';
 import {
   ISearchParams,
   ITodoData,
-  TodoItem,
+  TypeTodoEdit,
   TypeTodoCreate,
   TypeDeleteParams,
 } from './types';
+
+export const GET_ALL_TODO_LIST = 'todos/GET_ALL_TODO_LIST';
+export const SUCCESS_ALL_TODO_LIST = 'todos/SUCCESS_ALL_TODO_LIST';
+export const FAIL_ALL_TODO_LIST = 'todos/FAIL_ALL_TODO_LIST';
 
 export const GET_TODO_LIST = 'todos/GET_TODO_LIST';
 export const SUCCESS_TODO_LIST = 'todos/SUCCESS_TODO_LIST';
@@ -23,10 +27,13 @@ export const DELETE_TODO = 'todos/DELETE_TODO';
 export const SUCCESS_DELETE_TODO = 'todos/SUCCESS_DELETE_TODO';
 export const FAIL_DELETE_TODO = 'todos/FAIL_DELETE_TODO';
 
-// export const getTodoList = createAction(GET_TODO_LIST)<ISearchParams>();
-// export const requestEditTodo = createAction(EDIT_TODO)<number>();
-// export const requestCreateTodo = createAction(CREATE_TODO)<string>();
-// export const requestRemoveTodo = createAction(REMOVE_TODO)<number>();
+// TODO: async 액션 따로 만들기?
+
+export const fetchAllTodosAsync = createAsyncAction(
+  GET_ALL_TODO_LIST,
+  SUCCESS_ALL_TODO_LIST,
+  FAIL_ALL_TODO_LIST
+)<null, ITodoData, Error>();
 
 export const fetchTodosAsync = createAsyncAction(
   GET_TODO_LIST,
@@ -38,7 +45,7 @@ export const requestEditTodoAsync = createAsyncAction(
   EDIT_TODO,
   SUCCESS_EDIT_TODO,
   FAIL_EDIT_TODO
-)<TodoItem, ITodoData, Error>();
+)<TypeTodoEdit, ITodoData, Error>();
 
 export const requestDeleteTodoAsync = createAsyncAction(
   DELETE_TODO,

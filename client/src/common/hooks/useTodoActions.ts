@@ -2,15 +2,16 @@ import { useDispatch } from 'react-redux';
 import { useCallback } from 'react';
 import {
   fetchTodosAsync,
+  fetchAllTodosAsync,
   requestEditTodoAsync,
   requestDeleteTodoAsync,
   requestCreateTodoAsync,
 } from '../../store/todo/actions';
 import {
   ISearchParams,
-  TodoItem,
   TypeDeleteParams,
   TypeTodoCreate,
+  TypeTodoEdit,
 } from '../../store/todo/types';
 
 export default function useTodo(id?: number) {
@@ -19,8 +20,12 @@ export default function useTodo(id?: number) {
     (params: ISearchParams) => dispatch(fetchTodosAsync.request(params)),
     [dispatch]
   );
+  const getAllList = useCallback(
+    () => dispatch(fetchAllTodosAsync.request(null)),
+    [dispatch]
+  );
   const requestEditTodo = useCallback(
-    (data: TodoItem) => dispatch(requestEditTodoAsync.request(data)),
+    (data: TypeTodoEdit) => dispatch(requestEditTodoAsync.request(data)),
     [dispatch]
   );
   const requestDeleteTodo = useCallback(
@@ -32,5 +37,11 @@ export default function useTodo(id?: number) {
     [dispatch]
   );
 
-  return { getList, requestEditTodo, requestDeleteTodo, requestCreateTodo };
+  return {
+    getAllList,
+    getList,
+    requestEditTodo,
+    requestDeleteTodo,
+    requestCreateTodo,
+  };
 }

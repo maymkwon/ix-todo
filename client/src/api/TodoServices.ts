@@ -4,11 +4,13 @@ import {
   TodoItem,
   TypeTodoCreate,
   TypeDeleteParams,
+  TypeTodoEdit,
 } from '../store/todo/types';
 
 const TodoServices = {
+  getAllTodoList: () => axios.get('/todos/all'),
   getTodoList: (params: ISearchParams) => axios.get('/todos', { params }),
-  requestEditTodo: (data: TodoItem) => axios.post('/update', data),
+  requestEditTodo: (data: TypeTodoEdit) => axios.post('/update', data),
   requestCreateTodo: (data: TypeTodoCreate) => axios.post('/create', data),
   requestDeleteTodo: (params: TypeDeleteParams) =>
     axios.delete('/delete', { params }),
