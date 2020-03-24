@@ -7,10 +7,6 @@ export const renderText = (value: string) =>
 export const renderDate = (date: string) =>
   moment(date).format('YYYY-MM-DD HH:mm:ss');
 
-type IndexedObj = {
-  [key: string]: TodoItem[];
-};
-
 export const groupBy = (xs: TodoItem[], key: string) => {
   return xs.reduce((rv: any, x: any) => {
     if (x[key]) (rv[x[key]] = rv[x[key]] || []).push(x);
