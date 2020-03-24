@@ -1,23 +1,10 @@
-# 서버 실행
+**Server**
+
+데이터 베이스는 mysql 를 사용하였습니다.
+실행하려는 컴퓨터에 mysql이 설치 되어 있어야 합니다. (https://dev.mysql.com/downloads/mysql/)
 
 실행 환경 : MAC
 
-mysql이 설치 되어있어야 합니다. (https://dev.mysql.com/downloads/mysql/)
-
-1. 패키지 설치
-
-```
-npm i
-```
-
-2. 데이터 베이스 설정
-
-```
-npm init-server
-```
-
-3. 서버 실행
-
-```
-npm start
-```
+1. `cd ./server` 서버 폴더로 이동
+2. `npm start init-server` db를 설정합니다.
+3. `npm start` 서버를 실행합니다.
