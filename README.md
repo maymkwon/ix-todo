@@ -1,5 +1,3 @@
-# kakao ix 사전과제
-
 이 프로젝트는 [Create React App](https://github.com/facebook/create-react-app) 을 사용 하였습니다.
 
 # 카카오 IX 사전 과제 저장소
@@ -9,12 +7,11 @@
 # Table of Contents
 
 1. [실행 방법](#start)
-2. [빌드 방법](#build)
-3. [사용 라이브러리](#library)
-4. [폴더 구조](#structure)
-5. [프로젝트 진행](#process)
-6. [문제 해결](#coding)
-7. [회고](#retrospect)
+2. [사용 라이브러리](#library)
+3. [폴더 구조](#structure)
+4. [프로젝트 진행](#process)
+5. [문제 해결](#coding)
+6. [회고](#retrospect)
 
 ---
 
@@ -69,7 +66,7 @@ _스타일 관련_
 
 ---
 
-## 폴더구조 <a name="structure"></a>
+## 폴더 구조 <a name="structure"></a>
 
 컴포넌트 폴더는 원래 페이지뷰별로 폴더를 나누는데 이번 프로젝트는 그 의미가 없을것 같아 `component` 폴더에 모두 작성하였습니다.
 
@@ -108,10 +105,6 @@ _스타일 관련_
 아래의 순서로 작업하였습니다.
 
 1. 서버 작업
-
-- 서버셋팅하는 부분에서 상당한 시간이 소요되었습니다.
-- 모든 부분이 처음 사용해보는 부분이였습니다.
-
 2. 클라이언스 작업
 
 ---
