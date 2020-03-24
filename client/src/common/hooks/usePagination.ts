@@ -1,13 +1,11 @@
-import React, { useState, useEffect, memo } from 'react';
-import { PaginationItem } from '@material-ui/lab';
-import { PAGE_SIZE, MAX_PAGE } from '../common/Const';
-import { TodoItem } from '../store/todo/types';
+import { useCallback, useState, useEffect } from 'react';
 
-type IPagination = {
+import { TodoItem } from '../../store/todo/types';
+import { PAGE_SIZE, MAX_PAGE } from '../Const';
+
+interface IUsePagination {
   items: TodoItem[];
-  onChangePage: (items: TodoItem[]) => void;
-};
-
+}
 interface IPager {
   totalCount: number;
   currentPage: number;
@@ -19,8 +17,10 @@ interface IPager {
   endIndex: number;
   pages: number[];
 }
-const Pagination = ({ items = [], onChangePage }: IPagination) => {
+
+export default function usePagination({ items = [] }: IUsePagination) {
   const [pageNo, setPageNo] = useState(1);
+  const [list, setList] = useState<any>([]);
   const [pager, setPager] = useState<IPager | null>(null);
 
   const handleChangePage = (curPage: number) => {
@@ -31,10 +31,19 @@ const Pagination = ({ items = [], onChangePage }: IPagination) => {
       pagerInfo && items.slice(pagerInfo.startIndex, pagerInfo.endIndex + 1);
     setPager(pagerInfo);
     setPageNo(curPage);
-    if (pageList && pageList.length) {
-      onChangePage(pageList);
-    }
+    setList(pageList);
+    // if (pageList && pageList.length) {
+    //   onChangePage(pageList);
+    // }
   };
+
+  useEffect(() => {
+    if (items.length) {
+      handleChangePage(pageNo);
+    }
+  }, [items]);
+
+  const changePage = useCallback(handleChangePage, []);
 
   const getPage = (totalCount: number, currentPage: number) => {
     const pageSize = PAGE_SIZE;
@@ -87,44 +96,10 @@ const Pagination = ({ items = [], onChangePage }: IPagination) => {
     };
   };
 
-  useEffect(() => {
-    if (items.length) {
-      handleChangePage(pageNo);
-    }
-  }, [items]);
-
-  if (!pager || pager.pages.length <= 1) {
-    return null;
-  }
-  return (
-    // PaginationItem 컴포넌트는 스타일을 위해 사용
-    <div style={{ display: 'flex' }}>
-      <PaginationItem
-        type="first"
-        onClick={() => handleChangePage(1)}
-        disabled={pager.currentPage === 1}
-      />
-      {pager.startPage > 1 && <PaginationItem type="start-ellipsis" />}
-      {pager.pages.map((page: number) => {
-        return (
-          <PaginationItem
-            key={page}
-            page={page}
-            selected={pager.currentPage === page}
-            onClick={() => handleChangePage(page)}
-          />
-        );
-      })}
-      {pager.totalPages > pager.endPage && (
-        <PaginationItem type="end-ellipsis" />
-      )}
-      <PaginationItem
-        type="last"
-        onClick={() => handleChangePage(pager.totalPages)}
-        disabled={pager.currentPage === pager.totalPages}
-      />
-    </div>
-  );
-};
-
-export default memo(Pagination);
+  return {
+    list,
+    pager,
+    pageNo,
+    changePage,
+  };
+}

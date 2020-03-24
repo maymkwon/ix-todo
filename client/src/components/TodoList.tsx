@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { PAGE_SIZE } from '../common/Const';
 import useTodoActions from '../common/hooks/useTodoActions';
 import useAllTodoData from '../common/hooks/useAllTodoData';
 import Empty from './EmptyList';
 import EditTodoPopup from './EditTodoPopup';
-import { TodoItem, TypeTodoItem } from '../store/todo/types';
+import { TodoItem } from '../store/todo/types';
 import TodoListItem from './TodoListItem';
 import { List } from '@material-ui/core';
 import Pagination from './Pagination';
@@ -31,11 +30,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-type AnchorEl = {
-  el: HTMLElement;
-  todoInfo: TodoItem;
-};
-
 export default function TodoList() {
   const classes = useStyles();
   const { getAllList } = useTodoActions();
@@ -57,7 +51,7 @@ export default function TodoList() {
 
   useEffect(() => {
     getAllList();
-  }, []);
+  }, [getAllList]);
 
   if (todoAllData.contents.length === 0) {
     return <Empty />;

@@ -1,9 +1,6 @@
-import { call, put, fork, takeEvery, select } from 'redux-saga/effects';
+import { call, put, fork, takeEvery, all } from 'redux-saga/effects';
 import * as actions from './actions';
 import TodoServices from '../../api/TodoServices';
-import { ISearchParams, ITodoData, TodoState } from './types';
-import { PAGE_SIZE } from '../../common/Const';
-import { selectTodo } from '../../common/selector';
 function* getAllTodoList(
   action: ReturnType<typeof actions.fetchAllTodosAsync.request>
 ): Generator {
@@ -36,14 +33,19 @@ function* editTodo(
 ): Generator {
   try {
     const data = action.payload;
-    const response: any = yield call(TodoServices.requestEditTodo, data);
-
-    yield put(actions.requestEditTodoAsync.success(response.data));
-    if (data.callback) {
-      data.callback();
+    if (Array.isArray(data)) {
+      yield all(data.map(x => call(TodoServices.requestEditTodo, x)));
+      yield put(actions.requestEditTodoAsync.success(null));
+      if (data[0].callback) {
+        data[0].callback();
+      }
+    } else {
+      yield call(TodoServices.requestEditTodo, data);
+      yield put(actions.requestEditTodoAsync.success(null));
+      if (data.callback) {
+        data.callback();
+      }
     }
-
-    const selectData: any = yield select(selectTodo);
     yield put(actions.fetchAllTodosAsync.request(null));
   } catch (e) {
     yield put(actions.requestEditTodoAsync.failure(e));

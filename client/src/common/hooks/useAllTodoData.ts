@@ -1,5 +1,4 @@
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store/rootReducer';
 import { selectAllTodo } from '../selector';
 import { groupBy } from '../utils';
 

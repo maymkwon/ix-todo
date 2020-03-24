@@ -59,10 +59,12 @@ export default function EditTodoPopup({
 
   useEffect(() => {
     if (data) {
+      // 합치기
       setTitle(data.title);
       setDone(data.done);
     }
     return () => {
+      // 합치기
       setTitle('');
       setRelTodo(0);
     };

@@ -45,7 +45,7 @@ export const requestEditTodoAsync = createAsyncAction(
   EDIT_TODO,
   SUCCESS_EDIT_TODO,
   FAIL_EDIT_TODO
-)<TypeTodoEdit, ITodoData, Error>();
+)<TypeTodoEdit | TypeTodoEdit[], null, Error>();
 
 export const requestDeleteTodoAsync = createAsyncAction(
   DELETE_TODO,

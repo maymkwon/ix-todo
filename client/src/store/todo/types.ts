@@ -21,12 +21,12 @@ export type TypeTodoCreate = {
 export interface TypeTodoEdit extends TypeTodoCreate {
   id: number;
   done: boolean;
-  relId?: number;
+  relId?: number | null;
 }
 export type TypeTodoItem = {
   title: string;
   done: boolean;
-  relId: number;
+  relId: number | null;
   createdAt: string;
   updatedAt: string;
 };

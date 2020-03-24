@@ -8,7 +8,7 @@ import { SETTING_ITEM_HEIGHT } from '../common/Const';
 import useTodoActions from '../common/hooks/useTodoActions';
 import { renderText, renderDate } from '../common/utils';
 import cn from 'classnames';
-import { TodoItem, TypeTodoItem, TypeTodoEdit } from '../store/todo/types';
+import { TodoItem, TypeTodoEdit } from '../store/todo/types';
 import {
   Typography,
   ListItem,
@@ -69,6 +69,14 @@ export default function TodoListItem(props: ITodoListItem) {
   };
   const handleDeleteTodo = (id: number) => {
     requestDeleteTodo({ id });
+    // props.relTodos;
+    if (props.relTodos && props.relTodos.length) {
+      const newData: TypeTodoEdit[] = props.relTodos.map(data => {
+        data.relId = null;
+        return data;
+      });
+      requestEditTodo(newData);
+    }
   };
 
   const handleOpenEdit = (todoInfo: TodoItem) => {

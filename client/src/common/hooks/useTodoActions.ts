@@ -25,7 +25,8 @@ export default function useTodo(id?: number) {
     [dispatch]
   );
   const requestEditTodo = useCallback(
-    (data: TypeTodoEdit) => dispatch(requestEditTodoAsync.request(data)),
+    (data: TypeTodoEdit | TypeTodoEdit[]) =>
+      dispatch(requestEditTodoAsync.request(data)),
     [dispatch]
   );
   const requestDeleteTodo = useCallback(
