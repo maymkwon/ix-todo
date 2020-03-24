@@ -8,6 +8,10 @@ import todoRouter from './routes/todos';
 import createRouter from './routes/create';
 import updateRouter from './routes/update';
 import deleteRouter from './routes/delete';
+import config from '../config/config.json';
+
+const defaultConfig = config.development;
+
 const app = new Koa();
 const router = new Router();
 
@@ -49,25 +53,17 @@ const operatorsAliases = {
 };
 
 // todo .env
-const sequelize = new Sequelize('todo_database', 'root', 'Aa12345!', {
-  host: '127.0.0.1',
-  dialect: 'mysql',
-  ...operatorsAliases,
-});
+const sequelize = new Sequelize(
+  defaultConfig.database,
+  defaultConfig.username,
+  defaultConfig.password,
+  {
+    host: defaultConfig.host,
+    dialect: 'mysql',
+    ...operatorsAliases,
+  }
+);
 sequelize.sync();
-
-// sequelize.query = async function() {
-//   try {
-//     // proxy this call
-//     return Sequelize.prototype.query.apply(this, arguments);
-//   } catch (err) {
-//     // handle it with sentry
-//     console.log(err);
-
-//     // rethrow error
-//     throw err;
-//   }
-// };
 
 app.use(cors());
 app.use(bodyParser());
