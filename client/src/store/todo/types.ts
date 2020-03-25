@@ -5,9 +5,9 @@ export type TodoAction = ActionType<typeof actions>;
 
 export interface ISearchParams {
   keyword?: string;
-  done?: boolean;
-  pageNo: number;
-  pageSize: number;
+  done?: boolean | null;
+  // pageNo: number;
+  // pageSize: number;
 }
 
 export type TypeDeleteParams = {
@@ -42,4 +42,8 @@ export interface ITodoData {
   totalCount?: number;
 }
 
-export type TodoState = { data: ITodoData; allData: ITodoData };
+export type TodoState = {
+  data: ITodoData;
+  allData: ITodoData;
+  params: ISearchParams;
+};

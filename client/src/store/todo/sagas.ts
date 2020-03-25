@@ -1,32 +1,34 @@
-import { call, put, fork, takeEvery, all } from 'redux-saga/effects';
+import { call, put, fork, takeEvery, all, select } from 'redux-saga/effects';
 import * as actions from './actions';
 import TodoServices from '../../api/TodoServices';
+import { selectSearchParams } from '../../common/selector';
 function* getAllTodoList(
   action: ReturnType<typeof actions.fetchAllTodosAsync.request>
 ): Generator {
   try {
-    const response: any = yield call(TodoServices.getAllTodoList);
+    const params = action.payload;
+    const response: any = yield call(TodoServices.getAllTodoList, params);
     yield put(actions.fetchAllTodosAsync.success(response.data));
   } catch (e) {
     yield put(actions.fetchAllTodosAsync.failure(e));
   }
 }
-function* getTodoList(
-  action: ReturnType<typeof actions.fetchTodosAsync.request>
-): Generator {
-  try {
-    const params = action.payload;
-    const response: any = yield call(TodoServices.getTodoList, params);
-    yield put(
-      actions.fetchTodosAsync.success({
-        ...response.data,
-        pageNo: params.pageNo,
-      })
-    );
-  } catch (e) {
-    yield put(actions.fetchTodosAsync.failure(e));
-  }
-}
+// function* getTodoList(
+//   action: ReturnType<typeof actions.fetchTodosAsync.request>
+// ): Generator {
+//   try {
+//     const params = action.payload;
+//     const response: any = yield call(TodoServices.getTodoList, params);
+//     yield put(
+//       actions.fetchTodosAsync.success({
+//         ...response.data,
+//         pageNo: params.pageNo,
+//       })
+//     );
+//   } catch (e) {
+//     yield put(actions.fetchTodosAsync.failure(e));
+//   }
+// }
 
 function* editTodo(
   action: ReturnType<typeof actions.requestEditTodoAsync.request>
@@ -46,7 +48,8 @@ function* editTodo(
         data.callback();
       }
     }
-    yield put(actions.fetchAllTodosAsync.request(null));
+    const params: any = yield select(selectSearchParams);
+    yield put(actions.fetchAllTodosAsync.request(params));
   } catch (e) {
     yield put(actions.requestEditTodoAsync.failure(e));
   }
@@ -66,7 +69,7 @@ function* createTodo(
       data.callback();
     }
 
-    yield put(actions.fetchAllTodosAsync.request(null));
+    yield put(actions.fetchAllTodosAsync.request({}));
   } catch (e) {
     yield put(actions.requestCreateTodoAsync.failure(e));
   }
@@ -79,17 +82,21 @@ function* deleteTodo(
     const data = action.payload;
     const response: any = yield call(TodoServices.requestDeleteTodo, data);
     yield put(actions.requestDeleteTodoAsync.success(response.data));
-    yield put(actions.fetchAllTodosAsync.request(null));
+    const params: any = yield select(selectSearchParams);
+    yield put(actions.fetchAllTodosAsync.request(params));
   } catch (e) {
     yield put(actions.requestDeleteTodoAsync.failure(e));
   }
 }
 
-function* watchTodoList() {
-  yield takeEvery(actions.fetchTodosAsync.request, getTodoList);
-}
+// function* watchTodoList() {
+//   yield takeEvery(actions.fetchTodosAsync.request, getTodoList);
+// }
 function* watchAllTodoList() {
-  yield takeEvery(actions.fetchAllTodosAsync.request, getAllTodoList);
+  yield takeEvery(
+    [actions.fetchAllTodosAsync.request, actions.SET_SEARCH_PARAMS],
+    getAllTodoList
+  );
 }
 function* watchEdit() {
   yield takeEvery(actions.requestEditTodoAsync.request, editTodo);
@@ -103,7 +110,7 @@ function* watchDelete() {
 
 function* todoSaga() {
   yield fork(watchAllTodoList);
-  yield fork(watchTodoList);
+  // yield fork(watchTodoList);
   yield fork(watchEdit);
   yield fork(watchCreate);
   yield fork(watchDelete);

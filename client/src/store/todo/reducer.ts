@@ -1,6 +1,10 @@
 import { createReducer } from 'typesafe-actions';
 import { TodoState, TodoAction } from './types';
-import { fetchTodosAsync, fetchAllTodosAsync } from './actions';
+import {
+  fetchTodosAsync,
+  fetchAllTodosAsync,
+  setSearchParams,
+} from './actions';
 
 const initialState: TodoState = {
   data: {
@@ -11,9 +15,17 @@ const initialState: TodoState = {
   allData: {
     contents: [],
   },
+  params: {
+    keyword: '',
+    done: undefined,
+  },
 };
 
 const todoReducer = createReducer<TodoState, TodoAction>(initialState)
+  .handleAction(setSearchParams, (state, action) => ({
+    ...state,
+    params: action.payload,
+  }))
   .handleAction(fetchTodosAsync.success, (state, action) => ({
     ...state,
     data: action.payload,

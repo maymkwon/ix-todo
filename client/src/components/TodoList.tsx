@@ -8,13 +8,15 @@ import { TodoItem } from '../store/todo/types';
 import TodoListItem from './TodoListItem';
 import { List } from '@material-ui/core';
 import Pagination from './Pagination';
+import SearchInput from './SearchInput';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     wrap: {
       position: 'relative',
       display: 'flex',
-      justifyContent: 'center',
+      flexDirection: 'column',
+      alignItems: 'center',
       overflow: 'auto',
     },
     list: {
@@ -30,12 +32,26 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+// type Test = {
+//   [x: string]: any;
+// };
+// type SearchOption = {
+//   [x: string]: any;
+//   keyword: string | null;
+//   done: boolean | null;
+// };
 export default function TodoList() {
   const classes = useStyles();
-  const { getAllList } = useTodoActions();
-  const todoAllData = useAllTodoData();
+  const { getAllList, setSearchParams } = useTodoActions();
+  // const [searchOption, setSearchOption] = useState<ISearchParams>({
+  //   keyword: '',
+  //   done: null,
+  // });
+  const { contents, params, relTodos } = useAllTodoData();
   const [listData, setListdata] = useState<TodoItem[]>([]);
   const [editInfo, setEditOpen] = useState<null | TodoItem>(null);
+
+  // const allData = todoAllData.contents;
 
   const handleOpenEditPopup = (todoInfo: TodoItem) => {
     setEditOpen(todoInfo);
@@ -50,37 +66,41 @@ export default function TodoList() {
   };
 
   useEffect(() => {
-    getAllList();
+    getAllList(params);
   }, [getAllList]);
 
-  if (todoAllData.contents.length === 0) {
-    return <Empty />;
-  }
   return (
-    <div className={classes.wrap}>
-      <List className={classes.list}>
-        {listData.map(todo => {
-          return (
-            <TodoListItem
-              key={todo.id}
-              data={todo}
-              relTodos={todoAllData.relTodos[todo.id]}
-              onClickEditOpenPopup={handleOpenEditPopup}
-            />
-          );
-        })}
-      </List>
-      <EditTodoPopup
-        open={editInfo !== null}
-        handleClose={handleCloseEditPopup}
-        data={editInfo}
-      />
-      <div style={{ position: 'absolute', bottom: 0 }}>
-        <Pagination
-          items={todoAllData.contents}
-          onChangePage={handlePageChange}
+    <>
+      <div className={classes.wrap}>
+        <SearchInput handleSearch={setSearchParams} params={params} />
+        {contents.length === 0 ? (
+          <Empty />
+        ) : (
+          <React.Fragment>
+            <List className={classes.list}>
+              {listData.map(todo => {
+                return (
+                  <TodoListItem
+                    key={todo.id}
+                    data={todo}
+                    relTodos={relTodos[todo.id]}
+                    onClickEditOpenPopup={handleOpenEditPopup}
+                  />
+                );
+              })}
+            </List>
+            <div style={{ position: 'absolute', bottom: 0 }}>
+              <Pagination items={contents} onChangePage={handlePageChange} />
+            </div>
+          </React.Fragment>
+        )}
+
+        <EditTodoPopup
+          open={editInfo !== null}
+          handleClose={handleCloseEditPopup}
+          data={editInfo}
         />
       </div>
-    </div>
+    </>
   );
 }

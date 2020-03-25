@@ -91,7 +91,7 @@ const Pagination = ({ items = [], onChangePage }: IPagination) => {
     if (items.length) {
       handleChangePage(pageNo);
     }
-  }, [items]);
+  }, [items, pageNo]);
 
   if (!pager || pager.pages.length <= 1) {
     return null;

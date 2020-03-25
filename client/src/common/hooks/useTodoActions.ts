@@ -6,6 +6,7 @@ import {
   requestEditTodoAsync,
   requestDeleteTodoAsync,
   requestCreateTodoAsync,
+  setSearchParams as setSearchAction,
 } from '../../store/todo/actions';
 import {
   ISearchParams,
@@ -16,12 +17,16 @@ import {
 
 export default function useTodo(id?: number) {
   const dispatch = useDispatch();
+  const setSearchParams = useCallback(
+    (params: ISearchParams) => dispatch(setSearchAction(params)),
+    [dispatch]
+  );
   const getList = useCallback(
     (params: ISearchParams) => dispatch(fetchTodosAsync.request(params)),
     [dispatch]
   );
   const getAllList = useCallback(
-    () => dispatch(fetchAllTodosAsync.request(null)),
+    (params: ISearchParams) => dispatch(fetchAllTodosAsync.request(params)),
     [dispatch]
   );
   const requestEditTodo = useCallback(
@@ -44,5 +49,6 @@ export default function useTodo(id?: number) {
     requestEditTodo,
     requestDeleteTodo,
     requestCreateTodo,
+    setSearchParams,
   };
 }

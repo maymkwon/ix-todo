@@ -40,10 +40,14 @@ router.get('/', async (ctx, next) => {
 });
 
 router.get('/all', async (ctx, next) => {
+  const { keyword = '', done } = ctx.request.query;
+
+  const whereDone = done ? { done } : null;
   const { count: totalCount, rows: contents } = await todoModel.findAndCountAll(
     {
       where: {
-        // relId: null,
+        title: { [Op.like]: '%' + keyword + '%' },
+        ...whereDone,
       },
       order: [['createdAt', 'DESC']],
     }

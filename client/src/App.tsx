@@ -29,7 +29,9 @@ const useStyles = makeStyles({
     color: '#fff',
     padding: '0 50px',
   },
-  rightBox: {},
+  rightBox: {
+    position: 'relative',
+  },
 });
 
 function App() {

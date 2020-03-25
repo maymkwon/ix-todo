@@ -1,4 +1,4 @@
-import { createAsyncAction } from 'typesafe-actions';
+import { createAsyncAction, createAction } from 'typesafe-actions';
 import {
   ISearchParams,
   ITodoData,
@@ -6,6 +6,8 @@ import {
   TypeTodoCreate,
   TypeDeleteParams,
 } from './types';
+
+export const SET_SEARCH_PARAMS = 'todos/SET_SEARCH_PARAMS';
 
 export const GET_ALL_TODO_LIST = 'todos/GET_ALL_TODO_LIST';
 export const SUCCESS_ALL_TODO_LIST = 'todos/SUCCESS_ALL_TODO_LIST';
@@ -29,11 +31,13 @@ export const FAIL_DELETE_TODO = 'todos/FAIL_DELETE_TODO';
 
 // TODO: async 액션 따로 만들기?
 
+export const setSearchParams = createAction(SET_SEARCH_PARAMS)<ISearchParams>();
+
 export const fetchAllTodosAsync = createAsyncAction(
   GET_ALL_TODO_LIST,
   SUCCESS_ALL_TODO_LIST,
   FAIL_ALL_TODO_LIST
-)<null, ITodoData, Error>();
+)<ISearchParams, ITodoData, Error>();
 
 export const fetchTodosAsync = createAsyncAction(
   GET_TODO_LIST,
