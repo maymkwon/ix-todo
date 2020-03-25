@@ -13,22 +13,6 @@ function* getAllTodoList(
     yield put(actions.fetchAllTodosAsync.failure(e));
   }
 }
-// function* getTodoList(
-//   action: ReturnType<typeof actions.fetchTodosAsync.request>
-// ): Generator {
-//   try {
-//     const params = action.payload;
-//     const response: any = yield call(TodoServices.getTodoList, params);
-//     yield put(
-//       actions.fetchTodosAsync.success({
-//         ...response.data,
-//         pageNo: params.pageNo,
-//       })
-//     );
-//   } catch (e) {
-//     yield put(actions.fetchTodosAsync.failure(e));
-//   }
-// }
 
 function* editTodo(
   action: ReturnType<typeof actions.requestEditTodoAsync.request>
@@ -89,9 +73,6 @@ function* deleteTodo(
   }
 }
 
-// function* watchTodoList() {
-//   yield takeEvery(actions.fetchTodosAsync.request, getTodoList);
-// }
 function* watchAllTodoList() {
   yield takeEvery(
     [actions.fetchAllTodosAsync.request, actions.SET_SEARCH_PARAMS],
@@ -110,7 +91,6 @@ function* watchDelete() {
 
 function* todoSaga() {
   yield fork(watchAllTodoList);
-  // yield fork(watchTodoList);
   yield fork(watchEdit);
   yield fork(watchCreate);
   yield fork(watchDelete);

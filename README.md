@@ -25,6 +25,7 @@
 4. `localhost:3000` 접속
 
 **Server**
+
 실행 환경 : MAC
 
 데이터 베이스는 mysql 를 사용하였습니다.

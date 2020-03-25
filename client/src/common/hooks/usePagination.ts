@@ -32,9 +32,6 @@ export default function usePagination({ items = [] }: IUsePagination) {
     setPager(pagerInfo);
     setPageNo(curPage);
     setList(pageList);
-    // if (pageList && pageList.length) {
-    //   onChangePage(pageList);
-    // }
   };
 
   useEffect(() => {

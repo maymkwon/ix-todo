@@ -32,26 +32,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-// type Test = {
-//   [x: string]: any;
-// };
-// type SearchOption = {
-//   [x: string]: any;
-//   keyword: string | null;
-//   done: boolean | null;
-// };
 export default function TodoList() {
   const classes = useStyles();
   const { getAllList, setSearchParams } = useTodoActions();
-  // const [searchOption, setSearchOption] = useState<ISearchParams>({
-  //   keyword: '',
-  //   done: null,
-  // });
   const { contents, params, relTodos } = useAllTodoData();
   const [listData, setListdata] = useState<TodoItem[]>([]);
   const [editInfo, setEditOpen] = useState<null | TodoItem>(null);
-
-  // const allData = todoAllData.contents;
 
   const handleOpenEditPopup = (todoInfo: TodoItem) => {
     setEditOpen(todoInfo);
