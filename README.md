@@ -1,6 +1,6 @@
 이 프로젝트는 [Create React App](https://github.com/facebook/create-react-app) 을 사용 하였습니다.
 
-# 카카오 IX 사전 과제 저장소
+
 
 **목차**
 
